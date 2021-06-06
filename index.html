@@ -12,7 +12,7 @@
 <body>
     <div class="section">
         <h1 class="title">Stake To-Do List</h1>
-		<button id="enableEthereumButton">Enable Ethereum</button>
+		<button class="button is-link" id="enableEthereumButton">Enable Ethereum</button>
         <p id="account"></p>
         <div class="box">
             <!-- create tasks -->
@@ -233,10 +233,11 @@
 	}
 ]
     
-	// ethereum.request({ method: 'eth_requestAccounts' })
-	const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-	const account = accounts[0];
-	console.log(account)
+	document.querySelector('#enableEthereumButton').addEventListener('click', () => {
+		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+		const account = accounts[0];
+		console.log(account)
+	})
 
 
 	let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
