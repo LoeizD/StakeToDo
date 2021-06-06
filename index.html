@@ -237,6 +237,17 @@
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 		const account = accounts[0];
 		console.log(account)
+		// display account
+		document.querySelector('#account').innerHTML = account
+		// get task count
+        contract.methods.taskCount(account).call().then((res) => {
+            console.log(res)
+            document.querySelector('#taksList').innerHTML = `<p>task count: ${res}</p>`
+            // console.log(typeof(res))
+            for (i = 1; i <= res; i++) {
+                makeTaks(i)
+            }
+        })
 	})
 
 
@@ -259,25 +270,21 @@
         })
     }
     
-    let account
-    web3.eth.getAccounts( (err, acc) => {
-        account = acc[0]
-        // console.log(account)
-        document.querySelector('#account').innerHTML = account
-        // get task count
-        contract.methods.taskCount(account).call().then((res) => {
-            console.log(res)
-            document.querySelector('#taksList').innerHTML = `<p>task count: ${res}</p>`
-            // console.log(typeof(res))
-            for (i = 1; i <= res; i++) {
-                makeTaks(i)
-            }
-        })
-    } )
-
-    // get all tasks
-    // make a todo item in html
-
+    // let account
+    // web3.eth.getAccounts( (err, acc) => {
+    //     account = acc[0]
+    //     // console.log(account)
+    //     document.querySelector('#account').innerHTML = account
+    //     // get task count
+    //     contract.methods.taskCount(account).call().then((res) => {
+    //         console.log(res)
+    //         document.querySelector('#taksList').innerHTML = `<p>task count: ${res}</p>`
+    //         // console.log(typeof(res))
+    //         for (i = 1; i <= res; i++) {
+    //             makeTaks(i)
+    //         }
+    //     })
+    // } )
 
     document.querySelector('#createTask').addEventListener('click', () => {
         let name = document.querySelector('#createTaskName').value
