@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stake To-Do List</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.5/web3.min.js"></script>
+    <!-- <script src="node_modules/web3.js-browser/build/web3.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+</head>
+<body>
+    <div class="section">
+        <h1 class="title">Stake To-Do List</h1>
+        <p id="account"></p>
+        <div class="box">
+            <!-- create tasks -->
+            <h2>Create task</h2>
+            <p>Task name</p>
+            <input class="input" id="createTaskName" type="text">
+            <p>Task stake in ETH</p>
+            <input class="input" id="createStake" type="text" value="1">
+            <p>Stakeholder address</p>
+            <input class="input" id="createStakeholderAdress" type="text" value="0xBf910896fD0166a51AFc15b699DD56b0098ef0c4">
+            <p>Deadline in unix time since epoch (0 for no deadline)</p>
+            <input class="input" id="createDeadline" type="text" value="0">
+            <button class="button is-link" id="createTask">Create task</button>
+        </div>
+        <div class="box">
+            <!-- list your tasks -->
+            <p>Existing tasks</p>
+            <div id="taksList">
+                <p>Existing tasks 2</p>
+
+            </div>
+        </div>
+        <div class="box">
+            <!-- list tasks where you are stakeholder -->
+            <p>Stakeholding tasks</p>
+            <p>Creator address</p>
+            <input class="input" id="validateCreatorAddress" type="text" value="0x763b608cF6C36679F5e9387f4321F671C6Cd1A80">
+            <p>Task number</p>
+            <input class="input" id="validateTaskNumber" type="text">
+            <button class="button is-link" id="validateTask">Validate task</button>
+        </div>
+    </div>
+    
+</body>
+<script>
+    let abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_creator",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_taskNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "burnOverdue",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_stakeholder",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_taskName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_deadline",
+				"type": "uint256"
+			}
+		],
+		"name": "createTask",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_creator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "string",
+				"name": "_taskName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_taskNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "TaskCompleted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "_creator",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "string",
+				"name": "_taskName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_taskNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "TaskCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_creator",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_taskNumber",
+				"type": "uint256"
+			}
+		],
+		"name": "validateTask",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "taskCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "tasks",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "dateCreated",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dateCompleted",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "stakeholder",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountStaked",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "taskName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "deadline",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+    let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    let contract = new web3.eth.Contract(abi,"0x37b1AA98DEFB4fFF947f8f311bF9E4d799f26456")
+    
+    function makeTaks(i) {
+        console.log(`maketask: ${i}`)
+        contract.methods.tasks(account, i).call().then(task => {
+            // console.log(task)
+            document.querySelector('#taksList').innerHTML += `<div class="box ${task.dateCompleted == 0 ? "" : "has-background-primary"}">
+                <p class="subtitle">${task.taskName} (task #${i})</p>
+                <p>stakeholder: ${task.stakeholder}</p>
+                <p>Amount staked: ${web3.utils.fromWei(task.amountStaked, "ether")} ETH</p>
+                <p>deadline: ${task.deadline == 0 ? "No deadline" : new Date(task.deadline * 1000)}</p>
+                <p>created on: ${new Date(task.dateCreated * 1000)}</p>
+                </div>`
+
+
+        })
+    }
+    
+    let account
+    web3.eth.getAccounts( (err, acc) => {
+        account = acc[0]
+        // console.log(account)
+        document.querySelector('#account').innerHTML = account
+        // get task count
+        contract.methods.taskCount(account).call().then((res) => {
+            console.log(res)
+            document.querySelector('#taksList').innerHTML = `<p>task count: ${res}</p>`
+            // console.log(typeof(res))
+            for (i = 1; i <= res; i++) {
+                makeTaks(i)
+            }
+        })
+    } )
+
+    // get all tasks
+    // make a todo item in html
+
+
+    document.querySelector('#createTask').addEventListener('click', () => {
+        let name = document.querySelector('#createTaskName').value
+        let stakeholder = document.querySelector('#createStakeholderAdress').value
+        let deadline = document.querySelector('#createDeadline').value
+        let stake = document.querySelector('#createStake').value
+        stake = web3.utils.toWei(stake, 'ether')
+
+        // gas = contract.methods.createTask(stakeholder, name, deadline).estimateGas({gas: 5000000}).then(res => {
+        //     console.log(`gas ${gas}`)
+        // })
+
+        // TODO dynaimc account selection
+        contract.methods.createTask(stakeholder, name, deadline).send( {from: "0x763b608cF6C36679F5e9387f4321F671C6Cd1A80", value: stake, gas: 5000000}).then(res => console.log(res.toString()))
+        // contract.methods.createTask(stakeholder, name, deadline).send({from: account, value: stake}).then(res => console.log(res.toString()))
+    })
+    document.querySelector('#validateTask').addEventListener('click', () => {
+        let creator = document.querySelector('#validateCreatorAddress').value
+        let taskNum = document.querySelector('#validateTaskNumber').value
+        
+        // TODO dynaimc account selection
+        contract.methods.validateTask(creator, taskNum).send( {from: "0x763b608cF6C36679F5e9387f4321F671C6Cd1A80", gas: 5000000}).then(res => console.log(res.toString()))
+    })
+
+</script>
+</html>
