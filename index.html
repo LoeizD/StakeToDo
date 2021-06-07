@@ -234,9 +234,10 @@
 ]
     
 	let contract;
+	let account;
 	document.querySelector('#enableEthereumButton').addEventListener('click', async function () {
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-		const account = accounts[0];
+		account = accounts[0];
 		console.log(account)
 		window.web3 = new Web3(window.ethereum);
 		contract = new window.web3.eth.Contract(abi,"0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7") // mumbai testnet
@@ -263,7 +264,7 @@
     function makeTaks(i) {
         console.log(`maketask: ${i}`)
         contract.methods.tasks(account, i).call().then(task => {
-            // console.log(task)
+            console.log(task)
             document.querySelector('#taksList').innerHTML += `<div class="box ${task.dateCompleted == 0 ? "" : "has-background-primary"}">
                 <p class="subtitle">${task.taskName} (task #${i})</p>
                 <p>stakeholder: ${task.stakeholder}</p>
