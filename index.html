@@ -233,12 +233,13 @@
 	}
 ]
     
+	let contract;
 	document.querySelector('#enableEthereumButton').addEventListener('click', async function () {
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 		const account = accounts[0];
 		console.log(account)
 		window.web3 = new Web3(window.ethereum);
-		let contract = new window.web3.eth.Contract(abi,"0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7") // mumbai testnet
+		contract = new window.web3.eth.Contract(abi,"0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7") // mumbai testnet
 		
 		// display account
 		document.querySelector('#account').innerHTML = account
