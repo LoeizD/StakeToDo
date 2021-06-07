@@ -18,11 +18,11 @@
             <!-- create tasks -->
             <h2 class="subtitle">Create task</h2>
             <p>Task name</p>
-            <input class="input" id="createTaskName" type="text">
+            <input class="input" id="createTaskName" type="text" placeholder="Do 10 pushups everyday for a month">
             <p>Task stake in ETH</p>
-            <input class="input" id="createStake" type="text" value="1">
+            <input class="input" id="createStake" type="text" placeholder="0.1">
             <p>Stakeholder address</p>
-            <input class="input" id="createStakeholderAdress" type="text" value="0xBf910896fD0166a51AFc15b699DD56b0098ef0c4">
+            <input class="input" id="createStakeholderAdress" type="text" placeholder="0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7">
             <p>Deadline in unix time since epoch (0 for no deadline)</p>
             <input class="input" id="createDeadline" type="text" value="0">
             <button class="button is-link" id="createTask">Create task</button>
@@ -39,7 +39,7 @@
             <!-- list tasks where you are stakeholder -->
             <p class="subtitle">Stakeholding tasks</p>
             <p>Creator address</p>
-            <input class="input" id="validateCreatorAddress" type="text" value="0x763b608cF6C36679F5e9387f4321F671C6Cd1A80">
+            <input class="input" id="validateCreatorAddress" type="text" placeholder="0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7" >
             <p>Task number</p>
             <input class="input" id="validateTaskNumber" type="text">
             <button class="button is-link" id="validateTask">Validate task</button>
@@ -311,7 +311,7 @@
         let creator = document.querySelector('#validateCreatorAddress').value
         let taskNum = document.querySelector('#validateTaskNumber').value
         
-        contract.methods.validateTask(creator, taskNum).send( {from: account, gas: 5000000}).then(res => console.log(res.toString()))
+        contract.methods.validateTask(creator, taskNum).send( {from: account, gas: 500000}).then(res => console.log(res.toString()))
     })
 
 </script>
