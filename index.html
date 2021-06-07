@@ -311,7 +311,6 @@
         let creator = document.querySelector('#validateCreatorAddress').value
         let taskNum = document.querySelector('#validateTaskNumber').value
         
-        // TODO dynaimc account selection
         contract.methods.validateTask(creator, taskNum).send( {from: account, gas: 5000000}).then(res => console.log(res.toString()))
     })
 
