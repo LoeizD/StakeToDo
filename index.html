@@ -237,6 +237,9 @@
 		const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
 		const account = accounts[0];
 		console.log(account)
+		window.web3 = new Web3(window.ethereum);
+		let contract = new window.web3.eth.Contract(abi,"0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7") // mumbai testnet
+		
 		// display account
 		document.querySelector('#account').innerHTML = account
 		// get task count
@@ -248,11 +251,13 @@
                 makeTaks(i)
             }
         })
+
+
 	})
 
 
-	let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-    let contract = new web3.eth.Contract(abi,"0x37b1AA98DEFB4fFF947f8f311bF9E4d799f26456")
+	// let web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
+    // let contract = new web3.eth.Contract(abi,"0x37b1AA98DEFB4fFF947f8f311bF9E4d799f26456")
     
     function makeTaks(i) {
         console.log(`maketask: ${i}`)
