@@ -9,14 +9,23 @@
     <!-- <script src="node_modules/web3.js-browser/build/web3.js"></script> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
 </head>
-<body>
+<body class="has-background-dark">
+	<nav class="navbar" role="navigation" aria-label="main navigation">
+		<div class="navbar-brand">
+			<h1 class="title is-family-code navbar-item has-text-link">Stake To-Do List</h1>
+		  <!-- navbar items, navbar burger... -->
+		</div>
+		<div class="navbar-end">
+		  <div class="navbar-item">
+			  <p id="account"></p>
+			<button class="button is-link" id="enableEthereumButton"><strong>Enable Ethereum</strong></button>
+		  </div>
+		</div>
+	</nav>
     <div class="section">
-        <h1 class="title">Stake To-Do List</h1>
-		<button class="button is-link" id="enableEthereumButton">Enable Ethereum</button>
-        <p id="account"></p>
-        <div class="box">
+        <div class="box has-background-light">
             <!-- create tasks -->
-            <h2 class="subtitle">Create task</h2>
+            <h2 class="title">Create task</h2>
             <p>Task name</p>
             <input class="input" id="createTaskName" type="text" placeholder="Do 10 pushups everyday for a month">
             <p>Task stake in ETH</p>
@@ -25,24 +34,24 @@
             <input class="input" id="createStakeholderAdress" type="text" placeholder="0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7">
             <p>Deadline in unix time since epoch (0 for no deadline)</p>
             <input class="input" id="createDeadline" type="text" value="0">
-            <button class="button is-link" id="createTask">Create task</button>
+            <button class="button is-link navbar-end mt-4" id="createTask">Create task</button>
         </div>
-        <div class="box">
+        <div class="box has-background-light">
             <!-- list your tasks -->
-            <p class="subtitle">Existing tasks</p>
+            <p class="title">Existing tasks</p>
             <div id="taksList">
                 <p>Existing tasks 2</p>
 
             </div>
         </div>
-        <div class="box">
+        <div class="box has-background-light">
             <!-- list tasks where you are stakeholder -->
-            <p class="subtitle">Stakeholding tasks</p>
+            <p class="title">Stakeholding tasks</p>
             <p>Creator address</p>
             <input class="input" id="validateCreatorAddress" type="text" placeholder="0xDE70852d5BEEC0Bc89bD9f041C4DF6C89C04A6C7" >
             <p>Task number</p>
             <input class="input" id="validateTaskNumber" type="text">
-            <button class="button is-link" id="validateTask">Validate task</button>
+            <button class="button is-link navbar-end mt-4" id="validateTask">Validate task</button>
         </div>
     </div>
     
