@@ -304,8 +304,7 @@
         //     console.log(`gas ${gas}`)
         // })
 
-        // TODO dynaimc account selection
-        contract.methods.createTask(stakeholder, name, deadline).send( {from: "0x763b608cF6C36679F5e9387f4321F671C6Cd1A80", value: stake, gas: 5000000}).then(res => console.log(res.toString()))
+        contract.methods.createTask(stakeholder, name, deadline).send( {from: account, value: stake, gas: 5000000}).then(res => console.log(res.toString()))
         // contract.methods.createTask(stakeholder, name, deadline).send({from: account, value: stake}).then(res => console.log(res.toString()))
     })
     document.querySelector('#validateTask').addEventListener('click', () => {
@@ -313,7 +312,7 @@
         let taskNum = document.querySelector('#validateTaskNumber').value
         
         // TODO dynaimc account selection
-        contract.methods.validateTask(creator, taskNum).send( {from: "0x763b608cF6C36679F5e9387f4321F671C6Cd1A80", gas: 5000000}).then(res => console.log(res.toString()))
+        contract.methods.validateTask(creator, taskNum).send( {from: account, gas: 5000000}).then(res => console.log(res.toString()))
     })
 
 </script>
