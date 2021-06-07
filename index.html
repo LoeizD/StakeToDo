@@ -48,6 +48,13 @@
     
 </body>
 <script>
+
+	// TODO
+	// gas estimate
+	// date selector to timestamp for deadline
+	// better UI separation
+	// events, feedback and reload when created/validated
+
     let abi = [
 	{
 		"inputs": [
@@ -304,7 +311,7 @@
         //     console.log(`gas ${gas}`)
         // })
 
-        contract.methods.createTask(stakeholder, name, deadline).send( {from: account, value: stake, gas: 5000000}).then(res => console.log(res.toString()))
+        contract.methods.createTask(stakeholder, name, deadline).send( {from: account, value: stake, gas: 500000}).then(res => console.log(res.toString()))
         // contract.methods.createTask(stakeholder, name, deadline).send({from: account, value: stake}).then(res => console.log(res.toString()))
     })
     document.querySelector('#validateTask').addEventListener('click', () => {
